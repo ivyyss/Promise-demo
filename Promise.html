@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Promise demo</title>
+</head>
+<body>
+   <script>
+       function getIp(){
+           var promise = new Promise(function(resolve,reject){
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET','https://easy-mock.com/mock/5ac2f80c3d211137b3f2843a/promise/getIp','true')
+            xhr.onload = function(){
+                var xhrResult = JSON.parse(xhr.responseText)
+                resolve(xhrResult)
+            }
+            xhr.onerror = function(){
+                reject('error...')
+            }
+            xhr.send()
+           })
+           return promise
+       }
+
+       function getCityfromIP(ip){
+           var promise = new Promise(function(resolve,reject){
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET','https://easy-mock.com/mock/5ac2f80c3d211137b3f2843a/promise/getCityFromIp?ip='+ip,'true')
+            xhr.onload = function(){
+                var xhrResult = JSON.parse(xhr.responseText)
+                resolve(xhrResult.city)
+            }
+            xhr.onerror = function(){
+                reject('error city...')
+            }
+            xhr.send()
+           })
+           return promise
+       }
+
+       function getWeatherfromCity(city){
+           var promise = new Promise(function(resolve,reject){
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET','https://easy-mock.com/mock/5ac2f80c3d211137b3f2843a/promise/getWeatherFromCity?city='+city,'true')
+            xhr.onload = function(){
+                var xhrResult = JSON.parse(xhr.responseText)
+                resolve(xhrResult.weather)
+            }
+            xhr.onerror = function(){
+                reject('error weather...')
+            }
+            xhr.send()
+           })
+           return promise
+       }
+
+       getIp().then(function(ip){
+        return getCityfromIP(ip)
+       }).then(function(city){
+           return getWeatherfromCity
+       }).then(function(data){
+           console.log(data)
+       }).catch(function(){
+           console.log('error')})
+    </script> 
+</body>
+</html>
